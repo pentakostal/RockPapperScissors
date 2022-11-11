@@ -5,7 +5,7 @@ class Game
     {
         if (get_class($playerOne) == get_class($playerTwo)) {
             $answer = "Draw";
-        } elseif ($playerOne->beats == get_class($playerTwo)) {
+        } elseif ($playerOne->beats[0] == get_class($playerTwo) || $playerOne->beats[1] == get_class($playerTwo)) {
             $answer = "Player wins";
         } else {
             $answer = "Computer wins";
@@ -16,17 +16,52 @@ class Game
 
 class Rock
 {
-    public string $beats = "Scissors";
+    public array $beats = ["Scissors", "Lizard"];
+
+    public function get(): string
+    {
+        return "Rock";
+    }
 }
 
 class Paper
 {
-    public string $beats = "Rock";
+    public array $beats = ["Rock", "Spocks"];
+
+    public function get(): string
+    {
+        return "Paper";
+    }
 }
 
 class Scissors
 {
-    public string $beats = "Paper";
+    public array $beats = ["Paper", "Lizard"];
+
+    public function get(): string
+    {
+        return "Scissors";
+    }
+}
+
+class Lizard
+{
+    public array $beats = ["Spocks", "Paper"];
+
+    public function get(): string
+    {
+        return "Lizard";
+    }
+}
+
+class Spocks
+{
+    public array $beats = ["Scissors", "Rock"];
+
+    public function get(): string
+    {
+        return "Spocks";
+    }
 }
 
 //Set up the game
@@ -34,10 +69,19 @@ $game = new Game();
 $elements = [
     $rock = new Rock(),
     $paper = new Paper(),
-    $scissors = new Scissors()
+    $scissors = new Scissors(),
+    $lizard = new Lizard(),
+    $spocks = new Spocks()
 ];
-$player = (int) readline("Choose: ->");
-$computer = rand(0, 2);
-var_dump($player);
-var_dump($computer);
+
+$i = 1;
+foreach ($elements as $element) {
+    echo "$i " . $element->get() . PHP_EOL;
+    $i++;
+}
+$player = (int) (readline("Choose : ->") - 1);
+$computer = rand(0, 4);
+
+echo "Player choice " . $elements[$player]->get() . PHP_EOL;
+echo "Computer choice " . $elements[$computer]->get() . PHP_EOL;
 echo $game->evaluate($elements[$player] , $elements[$computer]) . PHP_EOL;
